@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookIt reservations</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script>
+        async function fetchCSVData() {
+            const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vSy1RKZWxeCCfOTMUK2XhRYVVPPgiQFqNkTF53Rmymsu1CJGuUqLuOT5hXfUpgzQA9y7f8Af-BIh4Pz/pub?gid=1435777653&single=true&output=csv');
+            const text = await response.text();
+            displayCSVData(text);
+        }
+
+        function displayCSVData(csvText) {
+            const rows = csvText.split('\n').map(row => row.split(','));
+            let html = '<table class="table table-striped table-bordered"><thead class="thead-dark"><tr>';
+
+            // Assuming the first row is the header
+            rows[0].forEach(header => {
+                html += `<th>${header}</th>`;
+            });
+            html += '</tr></thead><tbody>';
+
+            // Display each row of data
+            rows.slice(1).forEach(row => {
+                html += '<tr>';
+                row.forEach(cell => {
+                    html += `<td>${cell}</td>`;
+                });
+                html += '</tr>';
+            });
+            html += '</tbody></table>';
+            document.getElementById("responses").innerHTML = html;
+        }
+
+        window.onload = fetchCSVData;
+    </script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">BookIt reservations</h1>
+        <div id="responses"></div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
