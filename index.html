@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BookIt reservations</title>
+    <title>Google Sheets CSV Data</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Styling for the table */
+        
+    </style>
     <script>
         async function fetchCSVData() {
             const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vSy1RKZWxeCCfOTMUK2XhRYVVPPgiQFqNkTF53Rmymsu1CJGuUqLuOT5hXfUpgzQA9y7f8Af-BIh4Pz/pub?gid=1435777653&single=true&output=csv');
@@ -15,24 +19,53 @@
 
         function displayCSVData(csvText) {
             const rows = csvText.split('\n').map(row => row.split(','));
+            
+            // Define the new headers
+            const headers = {
+                'Timestamp': 'Timestamp',
+                'Nom complet : ': 'Nom :',
+                'Adresse e-mail : ': 'E-mail',
+                'Numéro de téléphone : ': 'Num téléphone',
+                'Durée ?': 'Durée',
+                'Quel créneau horaire souhaitez-vous réserver ?': 'Date de réservation'
+            };
+
             let html = '<table class="table table-striped table-bordered"><thead class="thead-dark"><tr>';
 
-            // Assuming the first row is the header
-            rows[0].forEach(header => {
+            // Add new headers to the table
+            Object.values(headers).forEach(header => {
                 html += `<th>${header}</th>`;
             });
             html += '</tr></thead><tbody>';
 
-            // Display each row of data
-            rows.slice(1).forEach(row => {
-                html += '<tr>';
-                row.forEach(cell => {
-                    html += `<td>${cell}</td>`;
-                });
+            // Display each row of data, mapping to the new headers
+            rows.slice(1).forEach(row => {  // Skip the header row
+                html += '<tr onclick="displayDetails(this)">'; // Add click event
+                html += `<td>${row[0]}</td>`; // Timestamp
+                html += `<td>${row[1]}</td>`; // Nom complet
+                html += `<td>${row[2]}</td>`; // Adresse e-mail
+                html += `<td>${row[3]}</td>`; // Numéro de téléphone
+                html += `<td>${row[6]}</td>`; // Durée
+                html += `<td>${row[5]}</td>`; // Quel créneau horaire souhaitez-vous réserver ?
                 html += '</tr>';
             });
             html += '</tbody></table>';
             document.getElementById("responses").innerHTML = html;
+        }
+
+        function displayDetails(row) {
+            // Get the data from the clicked row
+            const cells = row.getElementsByTagName('td');
+            const details = `
+                <h5>Détails de la réservation</h5>
+                <p><strong>Timestamp:</strong> ${cells[0].innerText}</p>
+                <p><strong>Nom:</strong> ${cells[1].innerText}</p>
+                <p><strong>E-mail:</strong> ${cells[2].innerText}</p>
+                <p><strong>Num téléphone:</strong> ${cells[3].innerText}</p>
+                <p><strong>Durée:</strong> ${cells[4].innerText}</p>
+                <p><strong>Date de réservation:</strong> ${cells[5].innerText}</p>
+            `;
+            document.getElementById("details").innerHTML = details; // Update details container
         }
 
         window.onload = fetchCSVData;
@@ -40,8 +73,16 @@
 </head>
 <body>
     <div class="container mt-5">
-        <h1 class="text-center">BookIt reservations</h1>
-        <div id="responses"></div>
+        <h1 class="text-center">BookIt Reservations</h1>
+
+        <!-- Details container at the top -->
+        <div id="details" class="mt-4 p-3 border rounded bg-light">
+            <h5>Détails de la réservation</h5>
+            <p>Cliquez sur une ligne pour voir les détails ici.</p>
+        </div>
+
+        <!-- Responses container for the table -->
+        <div id="responses" class="mt-4"></div>
     </div>
 
     <!-- Bootstrap JS and dependencies -->
