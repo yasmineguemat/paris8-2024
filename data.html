@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google Sheets CSV Data</title>
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
     <style>
-        /* Styling for the table */
-        
+
     </style>
     <script>
         async function fetchCSVData() {
@@ -19,8 +18,6 @@
 
         function displayCSVData(csvText) {
             const rows = csvText.split('\n').map(row => row.split(','));
-            
-            // Define the new headers
             const headers = {
                 'Timestamp': 'Timestamp',
                 'Nom complet : ': 'Nom :',
@@ -30,23 +27,20 @@
                 'Quel créneau horaire souhaitez-vous réserver ?': 'Date de réservation'
             };
 
-            let html = '<table class="table table-striped table-bordered"><thead class="thead-dark"><tr>';
-
-            // Add new headers to the table
+            let html = '<table class="table  table-bordered"><thead class="thead-dark"><tr>';
             Object.values(headers).forEach(header => {
                 html += `<th>${header}</th>`;
             });
             html += '</tr></thead><tbody>';
 
-            // Display each row of data, mapping to the new headers
-            rows.slice(1).forEach(row => {  // Skip the header row
-                html += '<tr onclick="displayDetails(this)">'; // Add click event
-                html += `<td>${row[0]}</td>`; // Timestamp
-                html += `<td>${row[1]}</td>`; // Nom complet
-                html += `<td>${row[2]}</td>`; // Adresse e-mail
-                html += `<td>${row[3]}</td>`; // Numéro de téléphone
-                html += `<td>${row[6]}</td>`; // Durée
-                html += `<td>${row[5]}</td>`; // Quel créneau horaire souhaitez-vous réserver ?
+            rows.slice(1).forEach(row => {
+                html += '<tr onclick="displayDetails(this)">';
+                html += `<td>${row[0]}</td>`;
+                html += `<td>${row[1]}</td>`;
+                html += `<td>${row[2]}</td>`;
+                html += `<td>${row[3]}</td>`;
+                html += `<td>${row[6]}</td>`;
+                html += `<td>${row[5]}</td>`;
                 html += '</tr>';
             });
             html += '</tbody></table>';
@@ -54,7 +48,6 @@
         }
 
         function displayDetails(row) {
-            // Get the data from the clicked row
             const cells = row.getElementsByTagName('td');
             const details = `
                 <h5>Détails de la réservation</h5>
@@ -65,7 +58,7 @@
                 <p><strong>Durée:</strong> ${cells[4].innerText}</p>
                 <p><strong>Date de réservation:</strong> ${cells[5].innerText}</p>
             `;
-            document.getElementById("details").innerHTML = details; // Update details container
+            document.getElementById("details").innerHTML = details;
         }
 
         window.onload = fetchCSVData;
@@ -74,18 +67,17 @@
 <body>
     <div class="container mt-5">
         <h1 class="text-center">BookIt Reservations</h1>
-
-        <!-- Details container at the top -->
         <div id="details" class="mt-4 p-3 border rounded bg-light">
             <h5>Détails de la réservation</h5>
             <p>Cliquez sur une ligne pour voir les détails ici.</p>
         </div>
-
-        <!-- Responses container for the table -->
         <div id="responses" class="mt-4"></div>
     </div>
-
-    <!-- Bootstrap JS and dependencies -->
+    <div class="container mt-2">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSe3djnlpHqbf-HdVqmPwvnQadwj6CLsqlQAehaDTkLt9PXxgw/viewform" target="_blank">
+            Formulaire de réservation
+        </a>
+    </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
