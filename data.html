@@ -19,8 +19,8 @@
         function displayCSVData(csvText) {
             const rows = csvText.split('\n').map(row => row.split(','));
             const headers = {
-                'Timestamp': 'Timestamp',
-                'Nom complet : ': 'Nom :',
+                'Timestamp': 'Horodatage',
+                'Nom complet : ': 'Nom',
                 'Adresse e-mail : ': 'E-mail',
                 'Numéro de téléphone : ': 'Num téléphone',
                 'Durée ?': 'Durée',
@@ -51,7 +51,7 @@
             const cells = row.getElementsByTagName('td');
             const details = `
                 <h5>Détails de la réservation</h5>
-                <p><strong>Timestamp:</strong> ${cells[0].innerText}</p>
+                <p><strong>Horodatage:</strong> ${cells[0].innerText}</p>
                 <p><strong>Nom:</strong> ${cells[1].innerText}</p>
                 <p><strong>E-mail:</strong> ${cells[2].innerText}</p>
                 <p><strong>Num téléphone:</strong> ${cells[3].innerText}</p>
