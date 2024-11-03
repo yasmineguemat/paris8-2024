@@ -7,11 +7,11 @@
 @prefix res: <http://www.example.org/vocab#> .
 
 <https://jardindesconnaissances.univ-paris8.fr/onto/fup8#> a owl:Ontology ;
-    dcterms:title "Vocabulaire de Réservation" .
+    dcterms:title "Vocabulaire de Reservation" .
 
 # Classes
 res:Reservation a rdfs:Class ;
-    rdfs:label "Réservation" ;
+    rdfs:label "Reservation" ;
     rdfs:domain o:Resource ;
     vs:term_status "experimental" .
 
@@ -19,7 +19,7 @@ res:Utilisateur a rdfs:Class ;
     rdfs:label "Utilisateur" ;
     vs:term_status "experimental" .
 
-# Propriétés
+# Proprietes
 # Utilisateur
 res:nomComplet a rdf:Property ;
     rdfs:label "Nom complet" ;
@@ -39,7 +39,7 @@ res:numeroTelephone a rdf:Property ;
 # Reservation
 
 res:ressource a rdf:Property ;
-    rdfs:label "Ressource réservée" ;
+    rdfs:label "Ressource reservee" ;
     rdfs:domain res:Reservation ;
     vs:term_status "experimental" .
 
