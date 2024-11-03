@@ -1,0 +1,64 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix o: <http://omeka.org/s/vocabs/o#> .
+@prefix res: <http://www.example.org/vocab#> .
+
+<https://jardindesconnaissances.univ-paris8.fr/onto/fup8#> a owl:Ontology ;
+    dcterms:title "Vocabulaire de Réservation" .
+
+# Classes
+res:Reservation a rdfs:Class ;
+    rdfs:label "Réservation" ;
+    rdfs:domain o:Resource ;
+    vs:term_status "experimental" .
+
+res:Utilisateur a rdfs:Class ;
+    rdfs:label "Utilisateur" ;
+    vs:term_status "experimental" .
+
+# Propriétés
+# Utilisateur
+res:nomComplet a rdf:Property ;
+    rdfs:label "Nom complet" ;
+    rdfs:domain res:Utilisateur ;
+    vs:term_status "experimental" .
+
+res:adresseEmail a rdf:Property ;
+    rdfs:label "Adresse e-mail" ;
+    rdfs:domain res:Utilisateur ;
+    vs:term_status "experimental" .
+
+res:numeroTelephone a rdf:Property ;
+    rdfs:label "Numero de telephone" ;
+    rdfs:domain res:Utilisateur ;
+    vs:term_status "experimental" .
+
+# Reservation
+
+res:ressource a rdf:Property ;
+    rdfs:label "Ressource réservée" ;
+    rdfs:domain res:Reservation ;
+    vs:term_status "experimental" .
+
+res:creneauHoraire a rdf:Property ;
+    rdfs:label "Creneau horaire" ;
+    rdfs:domain res:Reservation ;
+    vs:term_status "experimental" .
+
+res:duree a rdf:Property ;
+    rdfs:label "Duree" ;
+    rdfs:domain res:Reservation ;
+    vs:term_status "experimental" .
+
+res:objectif a rdf:Property ;
+    rdfs:label "Objectif " ;
+    rdfs:domain res:Reservation ;
+    vs:term_status "experimental" .
+
+res:nombrePersonnes a rdf:Property ;
+    rdfs:label "Nombre de personnes presentes" ;
+    rdfs:domain res:Reservation ;
+    vs:term_status "experimental" .
