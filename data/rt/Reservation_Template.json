@@ -1,0 +1,83 @@
+{
+    "o:label": "Reservation Template",
+    "o:resource_template_property": [
+        {
+            "o:alternate_label": null,
+            "o:alternate_comment": null,
+            "o:is_required": false,
+            "o:is_private": false,
+            "o:default_lang": null,
+            "data_types": [],
+            "vocabulary_namespace_uri": "http:\/\/purl.org\/dc\/terms\/",
+            "vocabulary_label": "Dublin Core",
+            "local_name": "title",
+            "label": "Title"
+        },
+        {
+            "o:alternate_label": null,
+            "o:alternate_comment": null,
+            "o:is_required": false,
+            "o:is_private": false,
+            "o:default_lang": null,
+            "data_types": [],
+            "vocabulary_namespace_uri": "http:\/\/www.example.org\/vocab#",
+            "vocabulary_label": "Vocabulaire de formation",
+            "local_name": "creneauHoraire",
+            "label": "Creneau horaire"
+        },
+        {
+            "o:alternate_label": null,
+            "o:alternate_comment": null,
+            "o:is_required": false,
+            "o:is_private": false,
+            "o:default_lang": null,
+            "data_types": [],
+            "vocabulary_namespace_uri": "http:\/\/www.example.org\/vocab#",
+            "vocabulary_label": "Vocabulaire de formation",
+            "local_name": "duree",
+            "label": "Duree"
+        },
+        {
+            "o:alternate_label": null,
+            "o:alternate_comment": null,
+            "o:is_required": false,
+            "o:is_private": false,
+            "o:default_lang": null,
+            "data_types": [],
+            "vocabulary_namespace_uri": "http:\/\/www.example.org\/vocab#",
+            "vocabulary_label": "Vocabulaire de formation",
+            "local_name": "nombrePersonnes",
+            "label": "Nombre de personnes presentes"
+        },
+        {
+            "o:alternate_label": null,
+            "o:alternate_comment": null,
+            "o:is_required": false,
+            "o:is_private": false,
+            "o:default_lang": null,
+            "data_types": [],
+            "vocabulary_namespace_uri": "http:\/\/www.example.org\/vocab#",
+            "vocabulary_label": "Vocabulaire de formation",
+            "local_name": "objectif",
+            "label": "Objectif "
+        },
+        {
+            "o:alternate_label": null,
+            "o:alternate_comment": null,
+            "o:is_required": false,
+            "o:is_private": false,
+            "o:default_lang": null,
+            "data_types": [],
+            "vocabulary_namespace_uri": "http:\/\/www.example.org\/vocab#",
+            "vocabulary_label": "Vocabulaire de formation",
+            "local_name": "ressource",
+            "label": "Ressource reservee"
+        }
+    ],
+    "o:resource_class": {
+        "vocabulary_namespace_uri": "http:\/\/www.example.org\/vocab#",
+        "vocabulary_label": "Vocabulaire de formation",
+        "local_name": "Reservation",
+        "label": "Reservation"
+    }
+}
