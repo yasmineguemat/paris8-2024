@@ -1,19 +1,22 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diagramme de Classes</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <title>Diagramme de Classe - BookIt</title>
+    <script type="module">
+        import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+        mermaid.initialize({ startOnLoad: false });
+        window.mermaid = mermaid;
+    </script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
         body {
             font-family: 'Roboto', sans-serif;
             background-color: #f7f9fc;
             color: #333;
         }
-        #mermaid-diagram {
+        .div {
             background: linear-gradient(135deg, #ffffff, #e2e2e2);
             width: 700px;
             border-radius: 10px;
@@ -22,97 +25,49 @@
             max-height: 500px;
             overflow-y: auto;
             transition: border-color 0.3s;
+            margin: auto;
         }
-        #mermaid-diagram:hover {
+        .classDiagram:hover {
             border-color: #0066cc;
         }
     </style>
 </head>
-<body class="d-flex justify-content-center align-items-center vh-100">
-
-    <div id="mermaid-diagram" class="p-3"></div>
-
+<body>
+<div class="div">
+    <div class="mermaid" id="classDiagram"></div>
+</div>
 <script>
-    mermaid.initialize({ startOnLoad: true });
+const apiUrl = "https://api.github.com/repos/yasmineguemat/paris8-2024/contents/data/rt";
+let mermaidText = "classDiagram\n";
 
-    async function getResourceTemplate(templateId) {
-        const resourceUrl = `http://localhost/omeka-s/api/resource_templates/${templateId}`;
-        try {
-            const response = await fetch(resourceUrl);
-            if (!response.ok) {
-                throw new Error(`Erreur HTTP : ${response.status}`);
-            }
-
-            const templateDetails = await response.json();
-            const propertyDetails = await Promise.all(
-                templateDetails['o:resource_template_property'].map(prop => getPropertyData(prop['o:property']['@id']))
-            );
-
-            return {
-                id: templateDetails['o:id'],
-                label: templateDetails['o:label'],
-                properties: propertyDetails
-            };
-        } catch (error) {
-            console.error('Erreur lors de la récupération du modèle de ressource :', error);
-            return null;
-        }
-    }
-
-    async function getPropertyData(propertyUrl) {
-        try {
-            const response = await fetch(propertyUrl);
-            if (!response.ok) {
-                throw new Error(`Erreur HTTP : ${response.status}`);
-            }
-
-            const propertyInfo = await response.json();
-            const dataType = Array.isArray(propertyInfo['o:data_type']) && propertyInfo['o:data_type'].length > 0 
-                ? propertyInfo['o:data_type'][0] 
-                : '';
-
-            return {
-                label: propertyInfo['o:label'] || 'Inconnu',
-                type: dataType
-            };
-        } catch (error) {
-            console.error('Erreur lors de la récupération de la propriété :', error);
-            return { label: 'Inconnu', type: '' };
-        }
-    }
-
-    async function renderMermaidDiagram() {
-        const templateIds = [7, 8]; // IDs des modèles à récupérer
-        let allDiagrams = 'classDiagram\n'; // Start with classDiagram
-
-        for (const templateId of templateIds) {
-            const resourceTemplate = await getResourceTemplate(templateId);
-
-            if (!resourceTemplate) {
-                alert(`Erreur lors de la récupération du modèle de ressource ID ${templateId}!`);
-                return;
-            }
-
-            allDiagrams += `    class ${resourceTemplate.label.replace(/\s+/g, '_')} {\n`;
-            
-            resourceTemplate.properties.forEach(prop => {
-                const propLabel = prop.label.replace(/\s+/g, '_');
-                const propType = prop.type ? `: ${prop.type.replace(/\s+/g, '_')}` : '';
-                allDiagrams += `        +${propLabel}${propType}\n`;
+d3.json(apiUrl)
+    .then(files => {
+        const jsonFiles = files.filter(file => file.name.endsWith(".json"));
+        const filePromises = jsonFiles.map(file => d3.json(file.download_url));
+        Promise.all(filePromises)
+            .then(fileContents => {
+                fileContents.forEach(data => {
+                    const className = data['o:label'].replace(/\s+/g, "_");
+                    mermaidText += `class ${className} {\n`;
+                    const properties = data["o:resource_template_property"];
+                    properties.forEach(prop => {
+                        const label = prop.label.replace(/\s+/g, "_");
+                        const type = "String";
+                        mermaidText += `    +${type} ${label}\n`;
+                    });
+                    mermaidText += "}\n";
+                });
+                document.getElementById("classDiagram").innerHTML = mermaidText;
+                mermaid.init(undefined, document.querySelectorAll(".mermaid"));
+            })
+            .catch(error => {
+                console.log("Erreur lors de la récupération des données des fichiers JSON :", error);
             });
-
-            allDiagrams += `    }\n\n`; // Adding extra newline for separation
-        }
-
-        const diagramContainer = document.getElementById('mermaid-diagram');
-        diagramContainer.innerHTML = allDiagrams;
-        
-        mermaid.init(undefined, diagramContainer);
-    }
-
-    renderMermaidDiagram();
+    })
+    .catch(error => {
+        console.log("Erreur lors de la récupération des fichiers depuis l'API GitHub :", error);
+    });
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
