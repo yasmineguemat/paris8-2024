@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title><?php echo $this->headTitle(); ?></title>
+    <?php 
+    $this->headLink()->appendStylesheet($this->assetUrl('css/style.css'));
+    $this->headScript()->appendFile($this->assetUrl('js/main.js'));
+    echo $this->headLink();
+    echo $this->headScript();
+    ?>
+</head>
+
+<body>
+    <header>
+        <h1>Bienvenue sur BookIt</h1>
+    </header>
+    <main>
+        <?php echo $this->content; ?>
+    </main>
+    <footer>
+        <p>&copy; 2024 BookIt</p>
+    </footer>
+</body>
+
+</html>

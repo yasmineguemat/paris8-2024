@@ -1,0 +1,78 @@
+<?php
+// Récupère le paramètre JSON si présent
+$json = $this->params()->fromQuery('json') ? $this->params()->fromQuery('json') : $this->params()->fromPost('json', '');
+if ($json) {
+    echo $this->partial('bookit/' . $page->slug(), []);
+    return;
+}
+
+// Ajoute les feuilles de styles nécessaires
+$this->headLink()->appendStylesheet($this->assetUrl('css/page-blocks.css', 'BookIt'));
+
+// Ajoute une classe personnalisée au body
+$this->htmlElement('body')->appendAttribute('class', $pageBodyClass);
+
+// Définit le titre de la page
+$this->pageTitle($page->title(), 2);
+
+// Récupère la navigation du site
+$nav = $site->publicNav();
+$activePage = $nav->findActive($nav->getContainer());
+
+// Contrôle l'affichage de la sous-navigation
+switch ($this->siteSetting('subnav_display')) {
+    case 'show':
+        $displaySubnav = $this->displayNavigation;
+        break;
+    case 'hide':
+        $displaySubnav = false;
+        break;
+    default:
+        $displaySubnav = $this->displayNavigation && $activePage && $activePage['page']->hasPages();
+}
+
+// Active ou désactive la pagination des pages
+$showPagePagination = $this->siteSetting('show_page_pagination', true);
+?>
+
+<!-- Affichage des breadcrumbs si une page active est présente -->
+<?php if ($activePage): ?>
+<?php if ($activePage['depth'] !== 0): ?>
+<nav class="breadcrumbs"><?php echo $nav->breadcrumbs(); ?></nav>
+<?php endif; ?>
+<?php endif; ?>
+
+<!-- Affichage de la sous-navigation si configurée -->
+<?php if ($activePage): ?>
+<?php if ($displaySubnav): ?>
+<nav class="sub-menu"><?php echo $nav->menu()->renderSubMenu(); ?></nav>
+<?php endif; ?>
+<?php endif; ?>
+
+<?php $this->trigger('view.show.before'); ?>
+
+<!-- Contenu principal de la page -->
+<div class="blocks">
+    <p>
+        BookIt est une application web permettant aux utilisateurs de réserver des services ou des créneaux horaires
+        pour diverses activités, comme la réservation de salles de réunion, de rendez-vous ou d'équipements.
+    </p>
+    <p>
+        Les utilisateurs soumettent leurs demandes via un formulaire, et les réservations sont ensuite affichées dans
+        un tableau de bord pour permettre aux administrateurs de les gérer facilement.
+    </p>
+
+    <h2><a href="https://yasmineguemat.github.io/paris8-2024/data.html">Voir mes réservations</a></h2>
+    <h2><a href="https://docs.google.com/forms/d/e/1FAIpQLSe3djnlpHqbf-HdVqmPwvnQadwj6CLsqlQAehaDTkLt9PXxgw/viewform">Réserver
+            un service</a></h2>
+    <h2><a href="https://yasmineguemat.github.io/paris8-2024/flux.md">Flux</a></h2>
+
+    <?php echo $this->content; ?>
+</div>
+
+<?php $this->trigger('view.show.after'); ?>
+
+<!-- Affichage de la pagination des pages si activée -->
+<?php if ($showPagePagination): ?>
+<?php echo $this->sitePagePagination(); ?>
+<?php endif; ?>
